@@ -4,18 +4,70 @@
  * and open the template in the editor.
  */
 package tampilan;
-
+import common.PartGroup;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import koneksi.DatabaseConnection;
 /**
  *
  * @author cosmo
  */
 public class FormPart extends javax.swing.JFrame {
+    private Connection conn= new DatabaseConnection().connect();
+    private DefaultTableModel tabmode;
 
     /**
      * Creates new form FormPart
      */
     public FormPart() {
         initComponents();
+        datatable();
+        gruppart.setModel(new DefaultComboBoxModel(PartGroup.values()));
+        kosong();
+        aktif();
+    }
+    
+    void aktif() {
+        partid.setEnabled(true);
+        kodepart.setEnabled(true);
+        description.setEnabled(true);
+        harga.setEnabled(true);
+        partid.requestFocus();
+    }
+    
+    void kosong() {
+        partid.setText("");
+        kodepart.setText("");
+        description.setText("");
+        gruppart.setSelectedIndex(0);
+        harga.setText("");
+        tcari.setText("");
+        
+    }
+    protected void datatable() {
+        Object [] baris = {"Part Id", "Kode Part", "Deskripsi Part", "Grup Part", "Harga"};
+        tabmode = new DefaultTableModel(null, baris);
+        tabelpart.setModel(tabmode);
+        String sql = "select * from mst_part";
+        
+        try{
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while (hasil.next()) {
+                String a = hasil.getString("partid");
+                String b = hasil.getString("kodepart");
+                String c = hasil.getString("description");
+                String d = hasil.getString("gruppart");
+                String e = hasil.getString("harga");
+                String [] data  = {a,b,c,d,e};
+                tabmode.addRow(data);
+                
+            } 
+        } catch (SQLException e){}
     }
 
     /**
@@ -28,37 +80,45 @@ public class FormPart extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
+        bcancel = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        bexit = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        partid = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        kodepart = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        description = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField4 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton3 = new javax.swing.JButton();
+        tabelpart = new javax.swing.JTable();
+        harga = new javax.swing.JTextField();
+        gruppart = new javax.swing.JComboBox<>();
+        bedit = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        bdelete = new javax.swing.JButton();
+        bsave = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        tcari = new javax.swing.JTextField();
+        bcari = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setBackground(new java.awt.Color(0, 255, 255));
+        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
-        jButton5.setText("Cancel");
+        bcancel.setText("Cancel");
+        bcancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bcancelActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Part ID");
 
-        jButton2.setText("Exit");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        bexit.setText("Exit");
+        bexit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                bexitActionPerformed(evt);
             }
         });
 
@@ -66,9 +126,9 @@ public class FormPart extends javax.swing.JFrame {
 
         jLabel4.setText("Deskripsi Part");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        partid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                partidActionPerformed(evt);
             }
         });
 
@@ -76,7 +136,7 @@ public class FormPart extends javax.swing.JFrame {
 
         jLabel6.setText("Harga");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelpart.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -87,17 +147,45 @@ public class FormPart extends javax.swing.JFrame {
                 "Part ID", "Kode Part", "Deskripsi", "Grup Part", "Harga"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tabelpart.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelpartMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabelpart);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACC", "BAN", "ELEKTRIK", "OLI", "REM" }));
+        bedit.setText("Edit");
+        bedit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                beditActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Edit");
-
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("FORM SPAREPART");
 
-        jButton4.setText("Delete");
+        bdelete.setText("Delete");
+        bdelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bdeleteActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Save");
+        bsave.setText("Save");
+        bsave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bsaveActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Kata Kunci Pencarian");
+
+        bcari.setText("Cari");
+        bcari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bcariActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -107,39 +195,44 @@ public class FormPart extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel5))
-                                .addGap(28, 28, 28)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jTextField3)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addGap(148, 148, 148)
-                                .addComponent(jLabel1))))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(partid)
+                            .addComponent(kodepart)
+                            .addComponent(description)
+                            .addComponent(harga, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(gruppart, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(bsave)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton3)
+                                .addComponent(bedit)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton4)
+                                .addComponent(bdelete)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton5)
+                                .addComponent(bcancel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton2)))))
-                .addContainerGap(44, Short.MAX_VALUE))
+                                .addComponent(bexit))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tcari, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bcari)))))
+                .addContainerGap(53, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(116, 116, 116))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,33 +242,39 @@ public class FormPart extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(partid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(kodepart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(description, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(gruppart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(harga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bsave, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(bexit)
+                        .addComponent(bedit)
+                        .addComponent(bdelete)
+                        .addComponent(bcancel)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                    .addComponent(jLabel7)
+                    .addComponent(tcari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bcari))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -192,15 +291,120 @@ public class FormPart extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        DetailActivity detail = new DetailActivity();
-        detail.setVisible(true);
+    private void bexitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bexitActionPerformed
         dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_bexitActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void partidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partidActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_partidActionPerformed
+
+    private void bsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bsaveActionPerformed
+        // TODO add your handling code here:
+        String sql = "insert into mst_part values(?,?,?,?,?)";
+        try {
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setString(1, partid.getText());
+            stat.setString(2, kodepart.getText());
+            stat.setString(3, description.getText());
+            stat.setString(4, gruppart.getSelectedItem().toString());
+            stat.setString(5, harga.getText());
+            stat.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
+            kosong();
+            partid.requestFocus();
+            datatable();
+            
+        } catch (SQLException e){
+            JOptionPane.showMessageDialog(null, "Data tidak Berhasil Disimpan");
+        }
+    }//GEN-LAST:event_bsaveActionPerformed
+
+    private void beditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beditActionPerformed
+        // TODO add your handling code here:
+        String sql = "update mst_part set kodepart=?, description=?, gruppart=?, harga=? where partid=?";
+        try {
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setString(1, kodepart.getText());
+            stat.setString(2, description.getText());
+            stat.setString(3, gruppart.getSelectedItem().toString()); 
+            stat.setString(4, harga.getText());
+            stat.setString(5, partid.getText());
+            stat.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Data Berhasil Diubah");
+            kosong();
+            partid.requestFocus();
+            datatable();
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Data tidak Berhasil Diubah");
+        }
+    }//GEN-LAST:event_beditActionPerformed
+
+    private void bdeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bdeleteActionPerformed
+        // TODO add your handling code here:
+        String sql = "delete from mst_part where partid=?";
+        try {
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setString(1, partid.getText());
+
+            stat.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus");
+            kosong();
+            partid.requestFocus();
+            datatable();
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Data tidak Berhasil Dihapus");
+        }
+    }//GEN-LAST:event_bdeleteActionPerformed
+
+    private void bcancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bcancelActionPerformed
+        // TODO add your handling code here:
+        kosong();
+        datatable();
+    }//GEN-LAST:event_bcancelActionPerformed
+
+    private void tabelpartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelpartMouseClicked
+        // TODO add your handling code here:
+        int bar = tabelpart.getSelectedRow();
+        String a = tabmode.getValueAt(bar, 0).toString();
+        String b = tabmode.getValueAt(bar, 1).toString();
+        String c = tabmode.getValueAt(bar, 2).toString();
+        String d = tabmode.getValueAt(bar, 3).toString();
+        String e = tabmode.getValueAt(bar, 4).toString();
+        
+        partid.setText(a);
+        kodepart.setText(b);
+        description.setText(c);
+        gruppart.setSelectedItem(PartGroup.valueOf(d));
+        harga.setText(e);
+    }//GEN-LAST:event_tabelpartMouseClicked
+
+    private void bcariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bcariActionPerformed
+        // TODO add your handling code here:
+        Object [] baris = {"Part Id", "Kode Part", "Deskripsi Part", "Grup Part", "Harga"};
+        tabmode = new DefaultTableModel(null, baris);
+        tabelpart.setModel(tabmode);
+        String sql = "select * from mst_part where partid like '%"+tcari.getText()+"%'";
+        
+        try{
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while (hasil.next()) {
+                String a = hasil.getString("partid");
+                String b = hasil.getString("kodepart");
+                String c = hasil.getString("description");
+                String d = hasil.getString("gruppart");
+                String e = hasil.getString("harga");
+                String [] data  = {a,b,c,d,e};
+                tabmode.addRow(data);
+                
+            } 
+        } catch (SQLException e){}
+    }//GEN-LAST:event_bcariActionPerformed
 
     /**
      * @param args the command line arguments
@@ -238,24 +442,27 @@ public class FormPart extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton bcancel;
+    private javax.swing.JButton bcari;
+    private javax.swing.JButton bdelete;
+    private javax.swing.JButton bedit;
+    private javax.swing.JButton bexit;
+    private javax.swing.JButton bsave;
+    private javax.swing.JTextField description;
+    private javax.swing.JComboBox<String> gruppart;
+    private javax.swing.JTextField harga;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField kodepart;
+    private javax.swing.JTextField partid;
+    private javax.swing.JTable tabelpart;
+    private javax.swing.JTextField tcari;
     // End of variables declaration//GEN-END:variables
 }
