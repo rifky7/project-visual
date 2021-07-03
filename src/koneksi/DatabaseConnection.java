@@ -30,6 +30,7 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             System.out.println("Gagal koneksi Database");
         }
+        
         return koneksi;
     }
 }
