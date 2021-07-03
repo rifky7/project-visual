@@ -10,5 +10,5 @@ package common;
  * @author cosmo
  */
 public enum BikeType {
-    CUB, MATIC, SPORT, BIGBIKE;
+    CUB, MATIC, SPORT, BIG_BIKE;
 }

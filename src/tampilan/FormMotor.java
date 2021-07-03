@@ -5,7 +5,16 @@
  */
 package tampilan;
 
+import common.BikeType;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.event.ListDataListener;
 import javax.swing.table.DefaultTableModel;
 import koneksi.DatabaseConnection;
 
@@ -22,23 +31,44 @@ public class FormMotor extends javax.swing.JFrame {
      */
     public FormMotor() {
         initComponents();
+        datatable();
+        cb_tipe.setModel(new DefaultComboBoxModel(BikeType.values()));
+        kosong();
+        aktif();
     }
     
     void aktif() {
         tf_id.setEnabled(true);
         tf_namaMotor.setEnabled(true);
-        tf_tipe.setEnabled(true);
+        cb_tipe.setEnabled(true);
+        tf_warna.setEnabled(true);
+        tf_tahunPerakitan.setEnabled(true);
         tf_id.requestFocus();
     }
     
     void kosong() {
         tf_id.setText("");
         tf_namaMotor.setText("");
-        tf_tipe.setText("");
+        cb_tipe.setSelectedIndex(0);
         tf_warna.setText("");
         tf_tahunPerakitan.setText("");
-//        cb_goldar.setSelectedIndex(0);
-//        tf_cari.setText("");
+    }
+    
+    protected void datatable() {
+        Object[] baris = {"No Motor", "Nama Motor", "Tipe Motor", "Tahun Perakitan", "Warna Motor"};
+        tabmode = new DefaultTableModel(null, baris);
+        tableData.setModel(tabmode);
+        String sql = "SELECT * FROM mst_motor";
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                String[] data = {rs.getString("motorid"), rs.getString("namamotor"), 
+                                rs.getString("tipemotor"), rs.getString("tahunperakitan"), rs.getString("warnamotor")};
+                tabmode.addRow(data);
+            }
+        } catch (Exception e) {
+        }
     }
 
     /**
@@ -52,7 +82,7 @@ public class FormMotor extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableData = new javax.swing.JTable();
         bSave = new javax.swing.JButton();
         bExit = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -64,17 +94,17 @@ public class FormMotor extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         tf_namaMotor = new javax.swing.JTextField();
         bEdit = new javax.swing.JButton();
-        tf_tipe = new javax.swing.JTextField();
         bDelete = new javax.swing.JButton();
         tf_tahunPerakitan = new javax.swing.JTextField();
         bCancel = new javax.swing.JButton();
         tf_warna = new javax.swing.JTextField();
+        cb_tipe = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 255, 255));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -85,9 +115,19 @@ public class FormMotor extends javax.swing.JFrame {
                 "Motor ID", "Nama Motor", "Tipe Motor", "Tahun Perakitan", "Warna Motor"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tableData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableDataMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableData);
 
         bSave.setText("Save");
+        bSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bSaveActionPerformed(evt);
+            }
+        });
 
         bExit.setText("Exit");
         bExit.addActionListener(new java.awt.event.ActionListener() {
@@ -110,6 +150,11 @@ public class FormMotor extends javax.swing.JFrame {
         jLabel6.setText("Warna Motor");
 
         bEdit.setText("Edit");
+        bEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bEditActionPerformed(evt);
+            }
+        });
 
         bDelete.setText("Delete");
         bDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -119,6 +164,11 @@ public class FormMotor extends javax.swing.JFrame {
         });
 
         bCancel.setText("Cancel");
+        bCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bCancelActionPerformed(evt);
+            }
+        });
 
         tf_warna.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -132,37 +182,36 @@ public class FormMotor extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(bSave))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bEdit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bDelete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(bCancel)
+                        .addComponent(bSave)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(bEdit)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(bDelete)
+                        .addGap(101, 101, 101)
+                        .addComponent(bCancel)
+                        .addGap(18, 18, 18)
                         .addComponent(bExit))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel6))
                         .addGap(46, 46, 46)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tf_warna, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(tf_tahunPerakitan, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(tf_tipe, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(tf_namaMotor, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(tf_id, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(51, 51, 51)
-                                .addComponent(jLabel1))))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel1))
+                            .addComponent(cb_tipe, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tf_tahunPerakitan, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -176,33 +225,33 @@ public class FormMotor extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(tf_namaMotor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cb_tipe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(tf_tahunPerakitan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(tf_warna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(tf_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(51, 51, 51)
-                        .addComponent(tf_tipe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tf_tahunPerakitan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tf_warna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(30, 30, 30)
+                        .addComponent(tf_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bSave)
                     .addComponent(bEdit)
                     .addComponent(bDelete)
                     .addComponent(bCancel)
                     .addComponent(bExit))
-                .addGap(28, 28, 28)
+                .addGap(58, 58, 58)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -227,11 +276,85 @@ public class FormMotor extends javax.swing.JFrame {
 
     private void bDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDeleteActionPerformed
         // TODO add your handling code here:
+        String sql = "DELETE FROM mst_motor where motorid = ?";
+        try {
+            int row = tableData.getSelectedRow();
+            String id = tableData.getValueAt(row, 0).toString();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            ps.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Data berhasil dihapus.");
+            kosong();
+            tf_id.requestFocus();
+            datatable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Data gagal dihapus.");
+        }
+        
     }//GEN-LAST:event_bDeleteActionPerformed
 
     private void tf_warnaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_warnaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_warnaActionPerformed
+
+    private void bSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSaveActionPerformed
+        // TODO add your handling code here:
+        String sql = "INSERT INTO mst_motor (motorid, namamotor, tipemotor, tahunperakitan, warnamotor)"
+                + " VALUES(?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, tf_id.getText());
+            ps.setString(2, tf_namaMotor.getText());
+            ps.setString(3, cb_tipe.getSelectedItem().toString());
+            ps.setString(4, tf_tahunPerakitan.getText());
+            ps.setString(5, tf_warna.getText());
+            ps.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Data berhasil disimpan.");
+            kosong();
+            tf_id.requestFocus();
+            datatable();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Data gagal disimpan.");
+        }
+    }//GEN-LAST:event_bSaveActionPerformed
+
+    private void bEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditActionPerformed
+        // TODO add your handling code here:
+        String sql = "UPDATE mst_motor SET namamotor=?, tipemotor=?, tahunperakitan=?, warnamotor=? WHERE motorid=?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(5, tf_id.getText());
+            ps.setString(1, tf_namaMotor.getText());
+            ps.setString(2, cb_tipe.getSelectedItem().toString());
+            ps.setString(3, tf_tahunPerakitan.getText());
+            ps.setString(4, tf_warna.getText());
+            ps.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Data berhasil disimpan.");
+            datatable();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Data gagal disimpan.");
+        }
+    }//GEN-LAST:event_bEditActionPerformed
+
+    private void tableDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDataMouseClicked
+        // TODO add your handling code here:
+        int row = tableData.getSelectedRow();
+        tf_id.setText(tableData.getValueAt(row, 0).toString());
+        tf_namaMotor.setText(tableData.getValueAt(row, 1).toString());
+        cb_tipe.setSelectedItem(BikeType.valueOf(tableData.getValueAt(row, 2).toString()));
+        tf_tahunPerakitan.setText(tableData.getValueAt(row, 3).toString());
+        tf_warna.setText(tableData.getValueAt(row, 4).toString());
+    }//GEN-LAST:event_tableDataMouseClicked
+
+    private void bCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelActionPerformed
+        // TODO add your handling code here:
+        kosong();
+    }//GEN-LAST:event_bCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -277,6 +400,7 @@ public class FormMotor extends javax.swing.JFrame {
     private javax.swing.JButton bEdit;
     private javax.swing.JButton bExit;
     private javax.swing.JButton bSave;
+    private javax.swing.JComboBox<String> cb_tipe;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -285,11 +409,10 @@ public class FormMotor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tableData;
     private javax.swing.JTextField tf_id;
     private javax.swing.JTextField tf_namaMotor;
     private javax.swing.JTextField tf_tahunPerakitan;
-    private javax.swing.JTextField tf_tipe;
     private javax.swing.JTextField tf_warna;
     // End of variables declaration//GEN-END:variables
 }

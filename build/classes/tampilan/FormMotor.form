@@ -43,21 +43,19 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="bSave" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="bEdit" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="bDelete" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="bCancel" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jScrollPane1" alignment="0" min="-2" pref="439" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="bSave" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="bEdit" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="bDelete" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
+                          <Component id="bCancel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="bExit" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -66,13 +64,12 @@
                               <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="tf_warna" alignment="0" min="-2" pref="242" max="-2" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                  <Component id="tf_tahunPerakitan" alignment="1" min="-2" pref="242" max="-2" attributes="0"/>
-                                  <Component id="tf_tipe" alignment="1" min="-2" pref="242" max="-2" attributes="0"/>
                                   <Component id="tf_namaMotor" alignment="1" min="-2" pref="242" max="-2" attributes="0"/>
                                   <Component id="tf_id" alignment="1" min="-2" pref="242" max="-2" attributes="0"/>
                               </Group>
@@ -80,9 +77,10 @@
                                   <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
                                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="cb_tipe" alignment="0" min="-2" pref="104" max="-2" attributes="0"/>
+                              <Component id="tf_tahunPerakitan" min="-2" pref="242" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Component id="jScrollPane1" alignment="0" min="-2" pref="439" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="27" max="32767" attributes="0"/>
               </Group>
@@ -100,37 +98,40 @@
                               <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="tf_namaMotor" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="cb_tipe" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="tf_tahunPerakitan" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="tf_warna" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="tf_id" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
-                          <Component id="tf_tipe" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="tf_tahunPerakitan" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="tf_warna" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="bSave" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="bEdit" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="bDelete" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="bCancel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="bCancel" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="bExit" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="96" max="-2" attributes="0"/>
-                  <EmptySpace pref="67" max="32767" attributes="0"/>
+                  <EmptySpace pref="66" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -143,7 +144,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="jTable1">
+            <Component class="javax.swing.JTable" name="tableData">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="5" rowCount="4">
@@ -158,6 +159,9 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableDataMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -165,6 +169,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Save"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bSaveActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="bExit">
           <Properties>
@@ -215,8 +222,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Edit"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="tf_tipe">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bEditActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="bDelete">
           <Properties>
@@ -232,11 +240,24 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancel"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bCancelActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="tf_warna">
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tf_warnaActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cb_tipe">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
