@@ -110,7 +110,7 @@ public class FormBengkel extends javax.swing.JFrame {
         jLabel3.setText("Nama Bengkel");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        jLabel4.setText("Kodel Bengkel");
+        jLabel4.setText("Kode Bengkel");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Jam", "1", "2", "3" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {

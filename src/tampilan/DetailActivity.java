@@ -233,7 +233,9 @@ public class DetailActivity extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMotor3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formMotor3ActionPerformed
-
+        FormMekanik mekanik = new FormMekanik();
+        mekanik.setVisible(true);
+        dispose();
     }//GEN-LAST:event_formMotor3ActionPerformed
 
     private void formMotor2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formMotor2ActionPerformed
