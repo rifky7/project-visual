@@ -1,0 +1,60 @@
+CREATE TABLE `mst_mekanik` (
+  `mekanikid` varchar(20) NOT NULL,
+  `namamekanik` varchar(100) NOT NULL,
+  `kodebengkel` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `mst_motor` (
+  `motorid` varchar(50) NOT NULL,
+  `namamotor` varchar(255) NOT NULL,
+  `tipemotor` varchar(20) NOT NULL,
+  `tahunperakitan` varchar(4) NOT NULL,
+  `warnamotor` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `mst_customer` (
+  `customerid` varchar(50) NOT NULL,
+  `customername` varchar(200) NOT NULL,
+  `jeniskelamin` varchar(20) NOT NULL,
+  `notelp` varchar(30) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `alamat` varchar(250) NOT NULL,
+  `nomesin` varchar(150) NOT NULL,
+  `nopol` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `mst_jasa` (
+  `jasaid` varchar(50) NOT NULL,
+  `namajasa` varchar(100) NOT NULL,
+  `tipejasa` varchar(50) NOT NULL,
+  `harga` varchar(20) NOT NULL,
+  `estimasiwaktu` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `mst_part` (
+  `partid` varchar(50) NOT NULL,
+  `kodepart` varchar(50) NOT NULL,
+  `description` varchar(200) NOT NULL,
+  `gruppart` varchar(100) NOT NULL,
+  `harga` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE mst_bengkel (
+bengkelid varchar(20) NOT NULL,
+namabengkel varchar(100) NOT NULL,
+kodebengkel varchar(20) NOT NULL,
+alamat text NOT NULL,
+notelp varchar(20) NOT NULL,
+jambuka varchar(5) NOT NULL,
+jamtutup varchar(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO pvisual.mst_bengkel
+(bengkelid, namabengkel, kodebengkel, alamat, notelp, jambuka, jamtutup)
+VALUES('BK001', 'Bengkel Putra Nusantara', 'PN001', 'Jalan Ahmad Yani No.13 Kota Bekasi', '021-08098999', '07:00', '17:30');
+INSERT INTO pvisual.mst_bengkel
+(bengkelid, namabengkel, kodebengkel, alamat, notelp, jambuka, jamtutup)
+VALUES('BK002', 'Bengkel Putra Nusantara 2', 'PN002', 'Jalan Jambu Merah No.11 Kota Depok', '021-080989991', '09:00', '17:30');
+INSERT INTO pvisual.mst_bengkel
+(bengkelid, namabengkel, kodebengkel, alamat, notelp, jambuka, jamtutup)
+VALUES('BK003', 'Bengkel Putra Nusantara 3', 'PN003', 'Jalan Keramat Raya Kota Depok', '021-080989992', '09:00', '17:30');
