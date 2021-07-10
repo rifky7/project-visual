@@ -298,6 +298,8 @@ public class FormPart extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bexitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bexitActionPerformed
+        DetailActivity detail = new DetailActivity();
+        detail.setVisible(true);
         dispose();
     }//GEN-LAST:event_bexitActionPerformed
 

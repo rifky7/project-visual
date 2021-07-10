@@ -9,9 +9,15 @@ package tampilan;
  *
  * @author Ridhwan KN
  */
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import koneksi.DatabaseConnection;
 public class FormLogin extends javax.swing.JFrame {
-
+    private Connection connect= new DatabaseConnection().connect();
+    private DefaultTableModel tabmode;
     /**
      * Creates new form formLogin
      */
@@ -19,12 +25,6 @@ public class FormLogin extends javax.swing.JFrame {
         initComponents();
     }
     
-    void kosong(){
-        tuser.setText("");
-        tpass.setText("");
-        tuser.requestFocus();
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -127,6 +127,9 @@ public class FormLogin extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(119, 119, 119)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -137,10 +140,7 @@ public class FormLogin extends javax.swing.JFrame {
                                     .addComponent(lojin, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(kensel, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(tpass, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(119, 119, 119)
-                        .addComponent(jLabel3)))
+                                .addComponent(tpass, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(80, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -181,15 +181,33 @@ public class FormLogin extends javax.swing.JFrame {
     private void lojinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lojinActionPerformed
         String user = tuser.getText();
         String pass = tpass.getText();
+        String email = "";
+        String password = "";
+        String name = null;
         
-        if (user.equals("admin")& pass.equals("admin")){
+        Object [] baris = {"Name", "Id Karyawan", "Email", "Password"};
+        tabmode = new DefaultTableModel(null, baris);
+        String sql = "select name from mst_user where email ='" + user + "' and password ='" + pass + "'";
+        
+        try{
+            java.sql.Statement stat = connect.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while (hasil.next()) {
+                name = hasil.getString("name");
+            } 
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        if (name!=null) {
             JOptionPane.showMessageDialog(null, "Login Berhasil");
             DetailActivity frontPage = new DetailActivity();
             frontPage.setVisible(true);
-            dispose();
-        } else{
-            JOptionPane.showMessageDialog(null, "Login Gagal");}   
-            kosong();
+            dispose(); 
+        }else {
+            JOptionPane.showMessageDialog(null, "Login Gagal");
+        }
+        
+        
     }//GEN-LAST:event_lojinActionPerformed
 
     private void tuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tuserActionPerformed
@@ -198,7 +216,6 @@ public class FormLogin extends javax.swing.JFrame {
 
     private void kenselActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kenselActionPerformed
         // TODO add your handling code here:
-        kosong();
     }//GEN-LAST:event_kenselActionPerformed
 
     private void tpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tpassActionPerformed
