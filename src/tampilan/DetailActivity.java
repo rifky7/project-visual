@@ -224,7 +224,7 @@ public class DetailActivity extends javax.swing.JFrame {
                             .addComponent(customer, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(service, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3))
                         .addGap(34, 34, 34)
@@ -291,7 +291,8 @@ public class DetailActivity extends javax.swing.JFrame {
 
     private void formMotor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formMotor1ActionPerformed
         // TODO add your handling code here:
-        TransaksiService trx = new TransaksiService();
+//        TransaksiService trx = new TransaksiService();
+        FormBooking trx = new FormBooking();
         trx.setVisible(true);
         dispose();
     }//GEN-LAST:event_formMotor1ActionPerformed
