@@ -246,6 +246,9 @@ public class DetailActivity extends javax.swing.JFrame {
 
     private void formMotor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formMotor1ActionPerformed
         // TODO add your handling code here:
+        TransaksiService trx = new TransaksiService();
+        trx.setVisible(true);
+        dispose();
     }//GEN-LAST:event_formMotor1ActionPerformed
 
     private void serviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serviceActionPerformed

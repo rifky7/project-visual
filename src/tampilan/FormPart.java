@@ -154,6 +154,12 @@ public class FormPart extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabelpart);
 
+        gruppart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gruppartActionPerformed(evt);
+            }
+        });
+
         bedit.setText("Edit");
         bedit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -405,6 +411,10 @@ public class FormPart extends javax.swing.JFrame {
             } 
         } catch (SQLException e){}
     }//GEN-LAST:event_bcariActionPerformed
+
+    private void gruppartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gruppartActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_gruppartActionPerformed
 
     /**
      * @param args the command line arguments

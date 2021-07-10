@@ -115,6 +115,12 @@ public class FormJasa extends javax.swing.JFrame {
 
         jLabel2.setText("Jasa ID");
 
+        jasaid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jasaidActionPerformed(evt);
+            }
+        });
+
         jLabel3.setText("Nama Jasa");
 
         namajasa.addActionListener(new java.awt.event.ActionListener() {
@@ -124,6 +130,12 @@ public class FormJasa extends javax.swing.JFrame {
         });
 
         jLabel4.setText("Tipe Jasa");
+
+        tipejasa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tipejasaActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Harga");
 
@@ -444,6 +456,14 @@ public class FormJasa extends javax.swing.JFrame {
     private void tcariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tcariActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tcariActionPerformed
+
+    private void jasaidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jasaidActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jasaidActionPerformed
+
+    private void tipejasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipejasaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tipejasaActionPerformed
 
     /**
      * @param args the command line arguments
