@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporan_Customer" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e6305f39-5126-4dac-b0d9-1dc3e7fbcd54">
+	<property name="ireport.zoom" value="1.6105100000000014"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="bengkel" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="bulan" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="namabulan" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="bengkelid" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     mst_bengkel.`bengkelid` AS mst_bengkel_bengkelid,
+     mst_customer.`customerid` AS mst_customer_customerid,
+     mst_customer.`customername` AS mst_customer_customername,
+     mst_customer.`jeniskelamin` AS mst_customer_jeniskelamin,
+     mst_customer.`notelp` AS mst_customer_notelp,
+     mst_customer.`email` AS mst_customer_email,
+     mst_customer.`alamat` AS mst_customer_alamat,
+     mst_customer.`nomesin` AS mst_customer_nomesin,
+     mst_customer.`nopol` AS mst_customer_nopol,
+     trx_booking.`tanggalbooking` AS trx_booking_tanggalbooking,
+     trx_booking.`customerid` AS trx_booking_customerid,
+     trx_booking.`bengkelid` AS trx_booking_bengkelid
+FROM
+     `trx_booking` trx_booking INNER JOIN `mst_bengkel` mst_bengkel ON trx_booking.`bengkelid` = mst_bengkel.`bengkelid`
+     INNER JOIN `mst_customer` mst_customer ON trx_booking.`customerid` = mst_customer.`customerid`
+
+WHERE mst_bengkel.`bengkelid`= $P{bengkelid} AND MONTH(trx_booking.`tanggalbooking`)=$P{bulan}]]>
+	</queryString>
+	<field name="mst_bengkel_bengkelid" class="java.lang.String"/>
+	<field name="mst_customer_customerid" class="java.lang.String"/>
+	<field name="mst_customer_customername" class="java.lang.String"/>
+	<field name="mst_customer_jeniskelamin" class="java.lang.String"/>
+	<field name="mst_customer_notelp" class="java.lang.String"/>
+	<field name="mst_customer_email" class="java.lang.String"/>
+	<field name="mst_customer_alamat" class="java.lang.String"/>
+	<field name="mst_customer_nomesin" class="java.lang.String"/>
+	<field name="mst_customer_nopol" class="java.lang.String"/>
+	<field name="trx_booking_tanggalbooking" class="java.sql.Timestamp"/>
+	<field name="trx_booking_customerid" class="java.lang.String"/>
+	<field name="trx_booking_bengkelid" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="148" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="137" y="17" width="406" height="62" uuid="38b43ce3-cf0e-40ec-949e-2e7508cf96a0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="36" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Laporan Data Customer]]></text>
+			</staticText>
+			<image>
+				<reportElement x="1" y="0" width="122" height="91" uuid="218dd491-3b37-4254-a764-c12957c04370"/>
+				<imageExpression><![CDATA["C:\\Users\\Hilmi\\OneDrive\\Documents\\Kuliah\\Semester 3\\Pemrograman Visual\\BookingServiceMotor\\project-visual\\src\\Laporan\\Logo.jpeg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="1" y="91" width="162" height="20" uuid="b32dff8c-c245-4dc7-aad4-e424c59defc6"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pada Bulan " + $P{namabulan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="111" width="162" height="20" uuid="01a5766c-c133-4955-ad41-1635987c82f5"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bengkel}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="cb3004ca-d7ea-49d6-85ef-9db79d1ed76b"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="61" height="15" forecolor="#736343" backcolor="#CCCCCC" uuid="14b37f82-0414-42cd-a5fb-df9a73989344"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Id Customer]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="61" y="0" width="61" height="15" forecolor="#736343" backcolor="#CCCCCC" uuid="455c1bd4-6d45-4898-aa0a-621ec46fb3c4"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Tanggal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="122" y="0" width="61" height="15" forecolor="#736343" backcolor="#CCCCCC" uuid="8dcf276a-4039-41f6-a1d7-29d85694a287"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="172" y="0" width="72" height="15" forecolor="#736343" backcolor="#CCCCCC" uuid="49f4772e-a73e-4380-85d7-3bca0d9e7150"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Jenis Kelamin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="244" y="0" width="51" height="15" forecolor="#736343" backcolor="#CCCCCC" uuid="3298c25f-d2e9-4f5f-9bbe-448469b38010"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[No.Telp]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="297" y="0" width="71" height="15" forecolor="#736343" backcolor="#CCCCCC" uuid="f8d7b097-167b-48cb-be6f-e81b7f391351"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Email]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="368" y="0" width="61" height="15" forecolor="#736343" backcolor="#CCCCCC" uuid="9a63f6d7-c789-4aa5-ab56-248e93c47cad"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Alamat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="430" y="0" width="61" height="15" forecolor="#736343" backcolor="#CCCCCC" uuid="1987e6df-23b0-4182-a8ce-72389d59df1f"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[No.Mesin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="493" y="0" width="61" height="15" forecolor="#736343" backcolor="#CCCCCC" uuid="83ded2c0-4648-4959-a305-4a8ccb654849"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[No.Polisi]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="15" uuid="4bb3a7e7-7fcc-48d5-a7d8-085d97a373ce"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="0" y="0" width="61" height="15" uuid="5ae74fc2-e13e-4633-87b9-ae0a9a88408c"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mst_customer_customerid}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="61" y="0" width="61" height="15" uuid="0f710752-2399-4373-87e6-f508dd433cc4"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{trx_booking_tanggalbooking}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="122" y="0" width="50" height="15" uuid="3de34128-4371-48d6-817f-36f7ba5135fb"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mst_customer_customername}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="183" y="0" width="61" height="15" uuid="10e0e409-c02f-452b-9763-3cd45dcb07ea"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mst_customer_jeniskelamin}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="244" y="0" width="51" height="15" uuid="5d87b44c-0b6d-4c3c-a758-18d37153881a"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mst_customer_notelp}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="298" y="0" width="71" height="15" uuid="9fa93253-38ed-4561-b4d7-0b181283dec7"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mst_customer_email}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="369" y="0" width="61" height="15" uuid="7e9c01ea-6209-496f-a1b5-637d083b375d"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mst_customer_alamat}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="493" y="0" width="61" height="15" uuid="748c85a0-2639-474f-98ce-9b1371ceefee"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mst_customer_nopol}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="431" y="0" width="61" height="15" uuid="d4c88396-5118-461f-a456-f9ac9056d530"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mst_customer_nomesin}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="22f8c738-260d-4ea6-8585-b96e18ed037f"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="1" width="576" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="dbfb04d6-2c27-4ee5-920e-30eb7eaac8eb"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="531" y="1" width="40" height="20" forecolor="#736343" uuid="6889c493-0981-47dd-ac37-7d601481f297"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343" uuid="5797ff38-d751-4398-bcf1-c79fb6daa801"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="449" y="1" width="80" height="20" forecolor="#736343" uuid="0c0064a9-6fd0-4228-ac38-485cbbf2142e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
