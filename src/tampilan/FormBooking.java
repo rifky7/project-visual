@@ -6,18 +6,29 @@
 package tampilan;
 
 import java.awt.Color;
+import java.io.File;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import koneksi.DatabaseConnection;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -827,6 +838,7 @@ public class FormBooking extends javax.swing.JFrame {
             ps.executeUpdate();
             
             JOptionPane.showMessageDialog(null, "Data berhasil disimpan.");
+            cetakForm(tNoTransaksi.getText());
             kosong();
             initTabelPart();
             setDisableField();
@@ -863,6 +875,23 @@ public class FormBooking extends javax.swing.JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Data part gagal disimpan.");
             return false;
+        }
+    }
+    
+    private void cetakForm(String noBooking) {
+        try{
+            Map<String,Object> parameter = new HashMap <String, Object>();
+            parameter.put("noBooking", noBooking);
+            File file =new File ("src/Laporan/CetakanBooking.jrxml");
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/pvisual", "root","");
+            JasperDesign jasperDesign = JRXmlLoader.load(file);;
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,parameter, con);
+            JasperViewer.viewReport(jasperPrint,false);
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Data tidak dapat dicetak!"+e.getMessage(),"Cetak Data",JOptionPane.ERROR_MESSAGE);
         }
     }
     
