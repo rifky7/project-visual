@@ -22,6 +22,8 @@ public class FormJasa extends javax.swing.JFrame {
     private DefaultTableModel tabmode;
     
     
+    Double harga = 0.0;
+    
     /**
      * Creates new form FormJasa
      */
@@ -37,7 +39,6 @@ public class FormJasa extends javax.swing.JFrame {
     void aktif() {
         jasaid.setEnabled(true);
         namajasa.setEnabled(true);
-        harga.setEnabled(true);
         estimasiwaktu.setEnabled(true);
         jasaid.requestFocus();
     }
@@ -45,10 +46,12 @@ public class FormJasa extends javax.swing.JFrame {
     void kosong() {
         jasaid.setText("");
         namajasa.setText("");
-        harga.setText("");
+        tharga.setText("");
         estimasiwaktu.setText("");
         tipejasa.setSelectedIndex(0);
         tcari.setText("");
+        
+        harga = 0.0;
         
     }
     
@@ -65,7 +68,7 @@ public class FormJasa extends javax.swing.JFrame {
                 String a = hasil.getString("jasaid");
                 String b = hasil.getString("namajasa");
                 String c = hasil.getString("tipejasa");
-                String d = hasil.getString("harga");
+                String d = String.valueOf(hasil.getDouble("harga"));
                 String e = hasil.getString("estimasiwaktu");
                 String [] data  = {a,b,c,d,e};
                 tabmode.addRow(data);
@@ -91,7 +94,7 @@ public class FormJasa extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         tipejasa = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        harga = new javax.swing.JTextField();
+        tharga = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         estimasiwaktu = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -139,9 +142,9 @@ public class FormJasa extends javax.swing.JFrame {
 
         jLabel5.setText("Harga");
 
-        harga.addActionListener(new java.awt.event.ActionListener() {
+        tharga.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                hargaActionPerformed(evt);
+                thargaActionPerformed(evt);
             }
         });
 
@@ -240,7 +243,7 @@ public class FormJasa extends javax.swing.JFrame {
                             .addComponent(jasaid, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(tipejasa, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(harga, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tharga, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addComponent(estimasiwaktu, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -294,7 +297,7 @@ public class FormJasa extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(harga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tharga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -337,9 +340,9 @@ public class FormJasa extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_namajasaActionPerformed
 
-    private void hargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hargaActionPerformed
+    private void thargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_thargaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_hargaActionPerformed
+    }//GEN-LAST:event_thargaActionPerformed
 
     private void bexitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bexitActionPerformed
                          
@@ -356,7 +359,7 @@ public class FormJasa extends javax.swing.JFrame {
             stat.setString(1, jasaid.getText());
             stat.setString(2, namajasa.getText());
             stat.setString(3, tipejasa.getSelectedItem().toString());
-            stat.setString(4, harga.getText());
+            stat.setDouble(4, Double.valueOf(tharga.getText()));
             stat.setString(5, estimasiwaktu.getText());
             stat.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
@@ -376,7 +379,7 @@ public class FormJasa extends javax.swing.JFrame {
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, namajasa.getText());
             stat.setString(2, tipejasa.getSelectedItem().toString());
-            stat.setString(3, harga.getText());
+            stat.setDouble(3, Double.valueOf(tharga.getText()));
             stat.setString(4, estimasiwaktu.getText());
             stat.setString(5, jasaid.getText());
             stat.executeUpdate();
@@ -403,7 +406,7 @@ public class FormJasa extends javax.swing.JFrame {
         jasaid.setText(a);
         namajasa.setText(b);
         tipejasa.setSelectedItem(JasaType.valueOf(c));
-        harga.setText(d);
+        tharga.setText(d);
         estimasiwaktu.setText(e);
     }//GEN-LAST:event_tabeljasaMouseClicked
 
@@ -446,7 +449,7 @@ public class FormJasa extends javax.swing.JFrame {
                 String a = hasil.getString("jasaid");
                 String b = hasil.getString("namajasa");
                 String c = hasil.getString("tipejasa");
-                String d = hasil.getString("harga");
+                String d = String.valueOf(hasil.getDouble("harga"));
                 String e = hasil.getString("estimasiwaktu");
                 String [] data  = {a,b,c,d,e};
                 tabmode.addRow(data);
@@ -508,7 +511,6 @@ public class FormJasa extends javax.swing.JFrame {
     private javax.swing.JButton bexit;
     private javax.swing.JButton bsave;
     private javax.swing.JTextField estimasiwaktu;
-    private javax.swing.JTextField harga;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -523,7 +525,16 @@ public class FormJasa extends javax.swing.JFrame {
     private javax.swing.JTextField namajasa;
     private javax.swing.JTable tabeljasa;
     private javax.swing.JTextField tcari;
+    private javax.swing.JTextField tharga;
     private javax.swing.JComboBox<String> tipejasa;
     // End of variables declaration//GEN-END:variables
+
+    private double DoublevaloeOf(String text) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private double DoublevalueOf(String text) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

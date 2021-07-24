@@ -67,7 +67,7 @@
                               <Component id="jasaid" min="-2" pref="339" max="-2" attributes="0"/>
                               <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                                   <Component id="tipejasa" min="-2" pref="102" max="-2" attributes="0"/>
-                                  <Component id="harga" min="-2" pref="338" max="-2" attributes="0"/>
+                                  <Component id="tharga" min="-2" pref="338" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="estimasiwaktu" min="-2" pref="32" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -137,7 +137,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="harga" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tharga" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -218,9 +218,9 @@
             <Property name="text" type="java.lang.String" value="Harga"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="harga">
+        <Component class="javax.swing.JTextField" name="tharga">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="hargaActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="thargaActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
