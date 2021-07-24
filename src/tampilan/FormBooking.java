@@ -7,8 +7,11 @@ package tampilan;
 
 import java.awt.Color;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -35,6 +38,8 @@ public class FormBooking extends javax.swing.JFrame {
     Double hargaPart = 0.0;
     Double totalHargaPart = 0.0;
     String kodeBengkel = null;
+    String idBengkel = null;
+    String idMekanik = null;
     Double totalHargaJasa = 0.0;
     
     /**
@@ -46,6 +51,7 @@ public class FormBooking extends javax.swing.JFrame {
         initCbBengkel();
         initCbMotor();
         initCbJasa();
+        initCbMekanik(cbBengkel.getSelectedItem().toString());
         setDisableField();
     }
     
@@ -61,6 +67,32 @@ public class FormBooking extends javax.swing.JFrame {
         
     }
     
+    private void kosong() {
+        tNoTransaksi.setText("");
+        tCustId.setText("");
+        tCustName.setText("");
+        tNopol.setText("");
+        tNomesin.setText("");
+        tKmMotor.setText("");
+        tPartCode.setText("");
+        tPartDescription.setText("");
+        tHargaPart.setText("");
+        cbBengkel.setSelectedIndex(0);
+        cbMotor.setSelectedIndex(0);
+        cbJasaId.setSelectedIndex(0);
+        cbMekanik.setSelectedIndex(0);
+        tJasaName.setText("");
+        tHargaJasa.setText("");
+        tTotalHarga.setText("");
+        idBengkel = ""; 
+        idMekanik = ""; 
+        description = "";
+        
+        hargaPart = 0.0;
+        totalHargaJasa = 0.0;
+        totalHargaPart = 0.0;
+    }
+    
     private void initCbBengkel() {
         String sql = "SELECT namabengkel FROM mst_bengkel";
         try {
@@ -72,6 +104,8 @@ public class FormBooking extends javax.swing.JFrame {
             cbBengkel.setModel(new DefaultComboBoxModel(new String[]{"0"}));
             if(!listCbBengkel.isEmpty()) {
                 cbBengkel.setModel(new DefaultComboBoxModel(listCbBengkel.toArray()));
+                cbBengkel.setSelectedIndex(0);
+                setKodeAndIdBengkel(cbBengkel.getSelectedItem().toString());
             } 
                 
         } catch (Exception e) {
@@ -109,6 +143,7 @@ public class FormBooking extends javax.swing.JFrame {
             if(!listCbJasa.isEmpty()) {
                 cbJasaId.setModel(new DefaultComboBoxModel(listCbJasa.toArray()));
             } 
+            cbJasaId.setSelectedItem("");
                 
         } catch (Exception e) {
             e.printStackTrace();
@@ -136,23 +171,37 @@ public class FormBooking extends javax.swing.JFrame {
         }
     }
     
-    private void setKodeBengkel(String namaBengkel) {
-        String sql = "SELECT kodebengkel FROM mst_bengkel where namabengkel = '"+ namaBengkel + "'";
+    protected void initTabelPart() {
+        Object[] baris = {"Kode Part", "Deskripsi", "Harga", "Qty", "Subtotal"};
+        tabmode = new DefaultTableModel(null, baris);
+        tblPart.setModel(tabmode);
+    }
+    
+    private void setKodeAndIdBengkel(String namaBengkel) {
+        String sql = "SELECT kodebengkel, bengkelid FROM mst_bengkel where namabengkel = '"+ namaBengkel + "'";
         try {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 kodeBengkel = rs.getString("kodebengkel");
+                idBengkel = rs.getString("bengkelid");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    protected void initTabelPart() {
-        Object[] baris = {"Kode Part", "Deskripsi", "Harga", "Kuantitas"};
-        tabmode = new DefaultTableModel(null, baris);
-        tblPart.setModel(tabmode);
+    private void setIdMekanik(String namaMekanik) {
+        String sql = "SELECT mekanikid FROM mst_mekanik where namamekanik = '"+ namaMekanik + "'";
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                idMekanik = rs.getString("mekanikid");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     private void hitungTotalPart() {
@@ -168,6 +217,14 @@ public class FormBooking extends javax.swing.JFrame {
     
     private void hitungTotalHarga() {
         tTotalHarga.setText(String.valueOf(totalHargaJasa+totalHargaPart));
+    }
+    
+    private boolean checkFieldIsFilled() {
+        if(tNoTransaksi.getText().isEmpty() || tNoTransaksi.getText() == null) return false;
+        if(tCustId.getText().isEmpty() || tCustId.getText() == null) return false;
+        if(tKmMotor.getText().isEmpty() || tKmMotor.getText() == null) return false;
+        if(tJasaName.getText().isEmpty() || tJasaName.getText() == null) return false;
+        return true;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -221,8 +278,8 @@ public class FormBooking extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         tTotalHarga = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        bSubmit = new javax.swing.JButton();
+        bCancel = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -498,18 +555,19 @@ public class FormBooking extends javax.swing.JFrame {
                             .addComponent(jLabel10)
                             .addComponent(cbMotor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel13))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
+                    .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbJasaId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tJasaName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tPartCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bAddPart)
-                    .addComponent(tPartDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tQty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bCariPart))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cbJasaId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tJasaName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(bAddPart)
+                        .addComponent(tPartDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tQty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(bCariPart)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -517,11 +575,12 @@ public class FormBooking extends javax.swing.JFrame {
                         .addComponent(jLabel15)
                         .addComponent(tHargaJasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tHargaPart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16)
-                    .addComponent(cbMekanik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel14)
+                        .addComponent(jLabel16)
+                        .addComponent(cbMekanik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(349, 349, 349))
         );
 
@@ -553,11 +612,21 @@ public class FormBooking extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jButton1.setText("Submit");
+        bSubmit.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        bSubmit.setText("Submit");
+        bSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bSubmitActionPerformed(evt);
+            }
+        });
 
-        jButton3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jButton3.setText("Print");
+        bCancel.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        bCancel.setText("Cancel");
+        bCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bCancelActionPerformed(evt);
+            }
+        });
 
         jButton4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jButton4.setText("Exit");
@@ -577,9 +646,9 @@ public class FormBooking extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)
+                        .addComponent(bCancel)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1))
+                        .addComponent(bSubmit))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -599,8 +668,8 @@ public class FormBooking extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3)
+                    .addComponent(bSubmit)
+                    .addComponent(bCancel)
                     .addComponent(jButton4))
                 .addGap(21, 21, 21))
         );
@@ -663,7 +732,8 @@ public class FormBooking extends javax.swing.JFrame {
     private void bAddPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddPartActionPerformed
         // TODO add your handling code here:
         if(description != null && tQty.getText() != null) {
-            String[] data = {tPartCode.getText(), description, hargaPart.toString(), tQty.getText()};
+            Double subTotal = hargaPart * Integer.parseInt(tQty.getText());
+            String[] data = {tPartCode.getText(), description, hargaPart.toString(), tQty.getText(), subTotal.toString()};
             tabmode.addRow(data);
         }
         hitungTotalPart();
@@ -704,7 +774,7 @@ public class FormBooking extends javax.swing.JFrame {
 
     private void cbBengkelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbBengkelActionPerformed
         // TODO add your handling code here:
-        setKodeBengkel(cbBengkel.getSelectedItem().toString());
+        setKodeAndIdBengkel(cbBengkel.getSelectedItem().toString());
         listCbMekanik = new ArrayList<>();
         initCbMekanik(kodeBengkel);
     }//GEN-LAST:event_cbBengkelActionPerformed
@@ -722,6 +792,85 @@ public class FormBooking extends javax.swing.JFrame {
             tQty.setText("");
         }
     }//GEN-LAST:event_tQtyFocusGained
+
+    private void bSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSubmitActionPerformed
+        // TODO add your handling code here:
+        String sql = "INSERT INTO trx_booking "
+                + "(bookingid, tanggalbooking, customerid, kmmotor, jasaid, bengkelid, motorid, mekanikid, total, createdat) "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            setIdMekanik(cbMekanik.getSelectedItem().toString());
+            String tglBooking = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(spTanggalBooking.getValue());
+            if(!checkFieldIsFilled()) {
+                JOptionPane.showMessageDialog(null, "Periksa kembali input data.");
+                return;
+            }
+            Boolean successSavePart = true;
+            if(tblPart.getRowCount() > 0) {
+                successSavePart = saveBookingPart();
+            }
+            if(!successSavePart) {
+                return;
+            }
+            
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, tNoTransaksi.getText());
+            ps.setTimestamp(2, Timestamp.valueOf(tglBooking));
+            ps.setString(3, tCustId.getText());
+            ps.setInt(4, Integer.parseInt(tKmMotor.getText()));
+            ps.setString(5, cbJasaId.getSelectedItem().toString());
+            ps.setString(6, idBengkel);
+            ps.setString(7, cbMotor.getSelectedItem().toString());
+            ps.setString(8, idMekanik);
+            ps.setDouble(9, Double.valueOf(tTotalHarga.getText()));
+            ps.setTimestamp(10, new Timestamp(System.currentTimeMillis()));
+            ps.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Data berhasil disimpan.");
+            kosong();
+            initTabelPart();
+            setDisableField();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Data gagal disimpan.");
+        }
+    }//GEN-LAST:event_bSubmitActionPerformed
+
+    private Boolean saveBookingPart() {
+        String sql = "INSERT INTO trx_bookingpart "
+                + "(bookingpartid, bookingid, kodepart, qty, harga, subtotal) "
+                + "VALUES(?, ?, ?, ?, ?, ?)";
+        try {
+            for (int i = 0; i < tblPart.getRowCount(); i++) {
+                String bookingID = tNoTransaksi.getText();
+                String bookingPartID = bookingID + String.format("%03d", i+1);
+                String kodePart = tblPart.getValueAt(i, 0).toString();
+                Integer qty = Integer.parseInt(tblPart.getValueAt(i, 3).toString());
+                Double harga = Double.parseDouble(tblPart.getValueAt(i, 2).toString());
+                Double subtotal = Double.parseDouble(tblPart.getValueAt(i, 4).toString());
+                
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setString(1, bookingPartID);
+                ps.setString(2, bookingID);
+                ps.setString(3, kodePart);
+                ps.setInt(4, qty);
+                ps.setDouble(5, harga);
+                ps.setDouble(6, subtotal);
+                ps.executeUpdate();
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Data part gagal disimpan.");
+            return false;
+        }
+    }
+    
+    private void bCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelActionPerformed
+        // TODO add your handling code here:
+        kosong();
+        initTabelPart();
+    }//GEN-LAST:event_bCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -761,14 +910,14 @@ public class FormBooking extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAddPart;
+    private javax.swing.JButton bCancel;
     private javax.swing.JButton bCariNopol;
     private javax.swing.JButton bCariPart;
+    private javax.swing.JButton bSubmit;
     private javax.swing.JComboBox<String> cbBengkel;
     private javax.swing.JComboBox<String> cbJasaId;
     private javax.swing.JComboBox<String> cbMekanik;
     private javax.swing.JComboBox<String> cbMotor;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
