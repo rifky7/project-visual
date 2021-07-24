@@ -19,6 +19,8 @@ import koneksi.DatabaseConnection;
 public class FormPart extends javax.swing.JFrame {
     private Connection conn= new DatabaseConnection().connect();
     private DefaultTableModel tabmode;
+    
+    Double harga = 0.0;
 
     /**
      * Creates new form FormPart
@@ -35,7 +37,7 @@ public class FormPart extends javax.swing.JFrame {
         partid.setEnabled(true);
         kodepart.setEnabled(true);
         description.setEnabled(true);
-        harga.setEnabled(true);
+        tharga.setEnabled(true);
         partid.requestFocus();
     }
     
@@ -44,8 +46,10 @@ public class FormPart extends javax.swing.JFrame {
         kodepart.setText("");
         description.setText("");
         gruppart.setSelectedIndex(0);
-        harga.setText("");
+        tharga.setText("");
         tcari.setText("");
+        
+        harga = 0.0;
         
     }
     protected void datatable() {
@@ -62,7 +66,7 @@ public class FormPart extends javax.swing.JFrame {
                 String b = hasil.getString("kodepart");
                 String c = hasil.getString("description");
                 String d = hasil.getString("gruppart");
-                String e = hasil.getString("harga");
+                String e = String.valueOf(hasil.getDouble("harga"));
                 String [] data  = {a,b,c,d,e};
                 tabmode.addRow(data);
                 
@@ -92,7 +96,7 @@ public class FormPart extends javax.swing.JFrame {
         description = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelpart = new javax.swing.JTable();
-        harga = new javax.swing.JTextField();
+        tharga = new javax.swing.JTextField();
         gruppart = new javax.swing.JComboBox<>();
         bedit = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -212,7 +216,7 @@ public class FormPart extends javax.swing.JFrame {
                             .addComponent(partid)
                             .addComponent(kodepart)
                             .addComponent(description)
-                            .addComponent(harga, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tharga, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(gruppart, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
@@ -264,7 +268,7 @@ public class FormPart extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(harga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tharga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(bsave, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -316,7 +320,7 @@ public class FormPart extends javax.swing.JFrame {
             stat.setString(2, kodepart.getText());
             stat.setString(3, description.getText());
             stat.setString(4, gruppart.getSelectedItem().toString());
-            stat.setString(5, harga.getText());
+            stat.setString(5, tharga.getText());
             stat.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
             kosong();
@@ -336,7 +340,7 @@ public class FormPart extends javax.swing.JFrame {
             stat.setString(1, kodepart.getText());
             stat.setString(2, description.getText());
             stat.setString(3, gruppart.getSelectedItem().toString()); 
-            stat.setString(4, harga.getText());
+            stat.setString(4, tharga.getText());
             stat.setString(5, partid.getText());
             stat.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data Berhasil Diubah");
@@ -388,7 +392,7 @@ public class FormPart extends javax.swing.JFrame {
         kodepart.setText(b);
         description.setText(c);
         gruppart.setSelectedItem(PartGroup.valueOf(d));
-        harga.setText(e);
+        tharga.setText(e);
     }//GEN-LAST:event_tabelpartMouseClicked
 
     private void bcariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bcariActionPerformed
@@ -406,7 +410,7 @@ public class FormPart extends javax.swing.JFrame {
                 String b = hasil.getString("kodepart");
                 String c = hasil.getString("description");
                 String d = hasil.getString("gruppart");
-                String e = hasil.getString("harga");
+                String e = String.valueOf(hasil.getDouble("harga"));
                 String [] data  = {a,b,c,d,e};
                 tabmode.addRow(data);
                 
@@ -462,7 +466,6 @@ public class FormPart extends javax.swing.JFrame {
     private javax.swing.JButton bsave;
     private javax.swing.JTextField description;
     private javax.swing.JComboBox<String> gruppart;
-    private javax.swing.JTextField harga;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -476,5 +479,6 @@ public class FormPart extends javax.swing.JFrame {
     private javax.swing.JTextField partid;
     private javax.swing.JTable tabelpart;
     private javax.swing.JTextField tcari;
+    private javax.swing.JTextField tharga;
     // End of variables declaration//GEN-END:variables
 }
