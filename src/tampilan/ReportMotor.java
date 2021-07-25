@@ -4,29 +4,32 @@
  * and open the template in the editor.
  */
 package tampilan;
+
 import java.io.File;
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import koneksi.DatabaseConnection;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.view.JasperDesignViewer;
 import net.sf.jasperreports.view.JasperViewer;
 
-import java.util.Date;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JOptionPane;
-import javax.swing.DefaultComboBoxModel;
-import koneksi.DatabaseConnection;
-
-
-public class ReportCustomer extends javax.swing.JFrame {
+/**
+ *
+ * @author Ridhwan KN
+ */
+public class ReportMotor extends javax.swing.JFrame {
     private Connection conn = new DatabaseConnection().connect();
     
     // Buat Combo box
@@ -34,18 +37,15 @@ public class ReportCustomer extends javax.swing.JFrame {
 
     String kodeBengkel = null;
     int bulan = 0;
-  
 
     /**
-     * Creates new form ReportCustomer
+     * Creates new form ReportMotor
      */
-    public ReportCustomer() {
+    public ReportMotor() {
         initComponents();
         initCbBengkel();
         getBulan(bulan);
     }
-    
-
     
     private void initCbBengkel() {
         String sql = "SELECT namabengkel FROM mst_bengkel";
@@ -78,37 +78,24 @@ public class ReportCustomer extends javax.swing.JFrame {
         }
     }
     
-        
     private String getBulan(int bulan) {
         switch(bulan) {
             case 1 : return "Januari";
-//            break;
             case 2 : return "Februari";
-//            break;
             case 3 : return "Maret";
-//            break;
             case 4 : return "April";
-//            break;
             case 5 : return "Mei";
-//            break;
             case 6 : return "Juni";
-//            break;
             case 7 : return "Juli";
-//            break;
             case 8 : return "Agustus";
-//            break;
             case 9 : return "September";
-//            break;
             case 10 : return "Oktober";
-//            break;
             case 11 : return "November";
-//            break;
             case 12 : return "Desember";
-//            break;
         }
         return "";
     } 
-   
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -130,7 +117,7 @@ public class ReportCustomer extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("CETAK LAPORAN DATA CUSTOMER");
+        jLabel1.setText("CETAK LAPORAN DATA MOTOR");
 
         jLabel2.setText("Bengkel");
 
@@ -143,19 +130,9 @@ public class ReportCustomer extends javax.swing.JFrame {
             }
         });
 
-        cbBengkel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "item 1", "item 2", "item 3", "item 4", " " }));
-        cbBengkel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbBengkelActionPerformed(evt);
-            }
-        });
+        cbBengkel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         cbBulan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
-        cbBulan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbBulanActionPerformed(evt);
-            }
-        });
 
         bexit.setText("EXIT");
         bexit.addActionListener(new java.awt.event.ActionListener() {
@@ -187,7 +164,7 @@ public class ReportCustomer extends javax.swing.JFrame {
                         .addComponent(bprint)
                         .addGap(34, 34, 34)
                         .addComponent(bexit)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,7 +183,7 @@ public class ReportCustomer extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bprint)
                     .addComponent(bexit))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         pack();
@@ -222,7 +199,7 @@ public class ReportCustomer extends javax.swing.JFrame {
             parameter.put("namabulan", getBulan(bulan));
             parameter.put("bulan", bulan);
             parameter.put("bengkelid",kodeBengkel);
-            File file =new File ("src/Laporan/Laporan_Customer.jrxml");
+            File file =new File ("src/Laporan/LaporanMotor.jrxml");
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/pvisual", "root","");
             JasperDesign jasperDesign = JRXmlLoader.load(file);;
@@ -236,19 +213,11 @@ public class ReportCustomer extends javax.swing.JFrame {
     }//GEN-LAST:event_bprintActionPerformed
 
     private void bexitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bexitActionPerformed
-            // TODO add your handling code here:
+        // TODO add your handling code here:
         DetailActivity detail = new DetailActivity();
         detail.setVisible(true);
         dispose();
     }//GEN-LAST:event_bexitActionPerformed
-
-    private void cbBengkelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbBengkelActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbBengkelActionPerformed
-
-    private void cbBulanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbBulanActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbBulanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -267,20 +236,20 @@ public class ReportCustomer extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ReportCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReportMotor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ReportCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReportMotor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ReportCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReportMotor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ReportCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ReportMotor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ReportCustomer().setVisible(true);
+                new ReportMotor().setVisible(true);
             }
         });
     }
