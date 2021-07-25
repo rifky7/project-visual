@@ -63,16 +63,12 @@ WHERE mst_bengkel.`bengkelid`= $P{bengkelid} AND MONTH(trx_booking.`tanggalbooki
 	<title>
 		<band height="148" splitType="Stretch">
 			<staticText>
-				<reportElement style="Title" x="137" y="17" width="406" height="62" uuid="38b43ce3-cf0e-40ec-949e-2e7508cf96a0"/>
+				<reportElement style="Title" x="85" y="16" width="406" height="62" uuid="38b43ce3-cf0e-40ec-949e-2e7508cf96a0"/>
 				<textElement verticalAlignment="Middle">
 					<font size="36" pdfFontName="Times-Roman"/>
 				</textElement>
 				<text><![CDATA[Laporan Data Customer]]></text>
 			</staticText>
-			<image>
-				<reportElement x="1" y="0" width="122" height="91" uuid="218dd491-3b37-4254-a764-c12957c04370"/>
-				<imageExpression><![CDATA["C:\\Users\\Hilmi\\OneDrive\\Documents\\Kuliah\\Semester 3\\Pemrograman Visual\\BookingServiceMotor\\project-visual\\src\\Laporan\\Logo.jpeg"]]></imageExpression>
-			</image>
 			<textField>
 				<reportElement x="1" y="91" width="162" height="20" uuid="b32dff8c-c245-4dc7-aad4-e424c59defc6"/>
 				<textElement>

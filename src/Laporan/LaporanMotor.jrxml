@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="600" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="95458819-8d4b-4304-8616-13ce541499f1">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="bengkel" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="bengkelid" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="bulan" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="namabulan" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     mst_bengkel.`bengkelid` AS mst_bengkel_bengkelid,
+     mst_bengkel.`namabengkel` AS mst_bengkel_namabengkel,
+     mst_motor.`motorid` AS mst_motor_motorid,
+     mst_motor.`namamotor` AS mst_motor_namamotor,
+     mst_motor.`tipemotor` AS mst_motor_tipemotor,
+     mst_motor.`tahunperakitan` AS mst_motor_tahunperakitan,
+     mst_motor.`warnamotor` AS mst_motor_warnamotor,
+     trx_booking.`tanggalbooking` AS trx_booking_tanggalbooking,
+     trx_booking.`bengkelid` AS trx_booking_bengkelid,
+     trx_booking.`motorid` AS trx_booking_motorid
+FROM
+     `trx_booking` trx_booking INNER JOIN `mst_motor` mst_motor ON trx_booking.`motorid` = mst_motor.`motorid`
+     INNER JOIN `mst_bengkel` mst_bengkel ON trx_booking.`bengkelid` = mst_bengkel.`bengkelid`
+
+WHERE mst_bengkel.`bengkelid`= $P{bengkelid} AND MONTH(trx_booking.`tanggalbooking`)=$P{bulan}]]>
+	</queryString>
+	<field name="mst_bengkel_bengkelid" class="java.lang.String"/>
+	<field name="mst_bengkel_namabengkel" class="java.lang.String"/>
+	<field name="mst_motor_motorid" class="java.lang.String"/>
+	<field name="mst_motor_namamotor" class="java.lang.String"/>
+	<field name="mst_motor_tipemotor" class="java.lang.String"/>
+	<field name="mst_motor_tahunperakitan" class="java.lang.String"/>
+	<field name="mst_motor_warnamotor" class="java.lang.String"/>
+	<field name="trx_booking_tanggalbooking" class="java.sql.Timestamp"/>
+	<field name="trx_booking_bengkelid" class="java.lang.String"/>
+	<field name="trx_booking_motorid" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="136" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="171" y="0" width="476" height="112" uuid="a2abb5e5-3462-477e-a5dd-3646f3e60c5d"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Laporan Data Motor]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="802" height="1" uuid="f67f275b-729d-4da7-9bb3-4edd75940745"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="133" height="15" forecolor="#736343" uuid="14ef8fad-ead3-407e-8eda-38cb9f1dfdb8"/>
+				<text><![CDATA[Id Motor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="133" y="0" width="133" height="15" forecolor="#736343" uuid="34e80a88-b12c-4fac-8d5d-2960f5bc442a"/>
+				<text><![CDATA[Tanggal Booking]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="266" y="0" width="133" height="15" forecolor="#736343" uuid="a5004ca5-3d7f-402c-a91a-db90fa731eb7"/>
+				<text><![CDATA[Nama Motor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="399" y="0" width="133" height="15" forecolor="#736343" uuid="06b0d358-067a-4663-9db9-1564a2d64196"/>
+				<text><![CDATA[Tahun Perakitan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="532" y="0" width="133" height="15" forecolor="#736343" uuid="af617e42-f087-4e7c-a9df-8be3d9f4531c"/>
+				<text><![CDATA[Warna Motor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="665" y="0" width="133" height="15" forecolor="#736343" uuid="240c767c-73bb-4608-b07a-b673ea9ad121"/>
+				<text><![CDATA[Tipe Motor]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="802" height="15" uuid="27f82766-ceab-4804-8c84-18e8d4fbf246"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="0" y="0" width="133" height="15" uuid="f20eb96a-e58b-4471-801e-ac74a954dd6b"/>
+					<textFieldExpression><![CDATA[$F{mst_motor_motorid}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="133" y="0" width="133" height="15" uuid="87fa53f8-ca83-4bc4-823e-412220471790"/>
+					<textFieldExpression><![CDATA[$F{trx_booking_tanggalbooking}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="266" y="0" width="133" height="15" uuid="791adf64-1b23-4ea7-9287-415cf2ffc00c"/>
+					<textFieldExpression><![CDATA[$F{mst_motor_namamotor}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="399" y="0" width="133" height="15" uuid="49a3e8b3-ef1a-4d40-858a-cfeee6a86802"/>
+					<textFieldExpression><![CDATA[$F{mst_motor_tahunperakitan}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="532" y="0" width="133" height="15" uuid="24d361b4-2059-48cc-8545-b20e7e3b22c3"/>
+					<textFieldExpression><![CDATA[$F{mst_motor_warnamotor}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="665" y="0" width="133" height="15" uuid="199af6d1-ea7d-4cfc-ac32-a6ffbcf07b2d"/>
+					<textFieldExpression><![CDATA[$F{mst_motor_tipemotor}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="17" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="802" height="1" uuid="438c8956-eebd-4d19-a194-c7b374f0b4c6"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="1" width="843" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="4c1be8d9-c942-4868-a33c-176bf8a60149"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="783" y="1" width="40" height="20" forecolor="#736343" uuid="1c49b673-4180-4de6-bd92-ff8f9f3b93cc"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="703" y="1" width="80" height="20" forecolor="#736343" uuid="7463672f-3aa2-4040-b1d4-cf82f0516b00"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343" uuid="5f1ba61e-6102-4c53-8542-110bf09a48da"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
