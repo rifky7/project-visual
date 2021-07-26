@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="76df399a-87d8-479c-ae89-30d13bedc224">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="bengkel" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="bengkelid" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="bulan" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="namabulan" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     trx_booking.`bookingid` AS bookingid,
+     mst_customer.`customerid` AS custid,
+     mst_customer.`customername` AS custname,
+     mst_mekanik.`mekanikid` AS mekanikid,
+     mst_mekanik.`namamekanik` AS namamekanik,
+     trx_booking.`total` AS total,
+     trx_booking.`tanggalbooking` AS trx_booking_tanggalbooking,
+     mst_bengkel.`bengkelid` AS bengkelid,
+     mst_bengkel.`namabengkel` AS namabengkel	
+FROM
+     `trx_booking` trx_booking 
+     INNER JOIN `mst_customer` mst_customer ON trx_booking.`customerid` = mst_customer.`customerid`
+     INNER JOIN `mst_mekanik` mst_mekanik ON trx_booking.`mekanikid` = mst_mekanik.`mekanikid`
+     INNER JOIN `mst_bengkel` mst_bengkel ON trx_booking.`bengkelid` = mst_bengkel.`bengkelid`
+
+WHERE mst_bengkel.`bengkelid`= $P{bengkelid} AND MONTH(trx_booking.`tanggalbooking`)=$P{bulan}]]>
+	</queryString>
+	<field name="bookingid" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="custid" class="java.lang.String"/>
+	<field name="custname" class="java.lang.String"/>
+	<field name="mekanikid" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="namamekanik" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bengkelid" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="sum_estimasi" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="102" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="70" y="12" width="406" height="33" uuid="34187813-6514-4ca7-8d70-f490c3d6f001"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Laporan Estimasi Pendapatan]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="56" width="184" height="20" uuid="a12543b3-5375-4189-bfff-f8f3ee6bd3fe"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pada Bulan " + $P{namabulan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="76" width="162" height="20" uuid="0ecc6c7e-077c-4aed-b0ee-b42da9d5c16c"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bengkel}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="4d189c64-4b50-4747-9a28-e6e446677dff"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="92" height="15" forecolor="#000000" uuid="c0a6525f-4f6b-4472-9b01-92c288985ac0"/>
+				<text><![CDATA[No Booking]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="92" y="19" width="92" height="15" forecolor="#000000" uuid="3d081585-299c-4bfc-a524-749bdf61062d"/>
+				<text><![CDATA[ID Customer ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="184" y="19" width="114" height="15" forecolor="#000000" uuid="36661f1f-0e01-4c0f-acab-431b161828cd"/>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="276" y="19" width="92" height="15" forecolor="#000000" uuid="3f7dd7a8-75c2-49f4-8be9-4768168cb45d"/>
+				<text><![CDATA[ID Mekanik]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="368" y="19" width="92" height="15" forecolor="#000000" uuid="e76e701f-0150-4ff3-9b6e-b2f3b24e1c42"/>
+				<text><![CDATA[Nama Mekanik]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="476" y="19" width="79" height="15" forecolor="#000000" uuid="581e83dd-f77a-4de8-8050-861b63c99a29"/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="0cc3da03-d489-4231-992f-5938c0213020"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="0" y="0" width="92" height="15" uuid="5470514a-247a-430b-af76-70a993ef2f21"/>
+				<textFieldExpression><![CDATA[$F{bookingid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="92" y="0" width="92" height="15" uuid="7c778dbf-ea27-4b35-a231-33fead30d7a0"/>
+				<textFieldExpression><![CDATA[$F{custid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="184" y="0" width="92" height="15" uuid="dab7d577-1fe2-4e62-b707-5469149be5e1"/>
+				<textFieldExpression><![CDATA[$F{custname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="276" y="0" width="92" height="15" uuid="b68dfe7b-4a6f-4959-902b-a78c33b5bbe1"/>
+				<textFieldExpression><![CDATA[$F{mekanikid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="368" y="0" width="108" height="15" uuid="716b44b6-850c-4596-8f44-bf97c7518cdb"/>
+				<textFieldExpression><![CDATA[$F{namamekanik}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="476" y="1" width="79" height="15" uuid="b7482541-257c-4dc0-8c7b-55c1f076e3dc"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement x="344" y="15" width="116" height="20" uuid="97c2f486-13be-4ed5-8572-af8494d09d9a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estimasi total harga]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="476" y="19" width="91" height="20" uuid="cb191c00-4d65-44b0-9869-a7aa3ccd48a9"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_estimasi}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

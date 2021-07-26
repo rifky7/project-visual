@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5fdce2bf-d43b-483c-84de-a6c8d8f2bd8b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="bengkel" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="bengkelid" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="bulan" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="namabulan" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     mst_bengkel.`bengkelid` AS mst_bengkel_bengkelid,
+     mst_bengkel.`namabengkel` AS mst_bengkel_namabengkel,
+     mst_part.`kodepart` AS mst_part_kodepart,
+     mst_part.`gruppart` AS mst_part_gruppart,
+     mst_part.`harga` AS mst_part_harga,
+     mst_part.`description` AS mst_part_description,
+     trx_booking.`bookingid` AS trx_booking_bookingid,
+     trx_booking.`tanggalbooking` AS trx_booking_tanggalbooking,
+     trx_booking.`bengkelid` AS trx_booking_bengkelid,
+     trx_bookingpart.`bookingpartid` AS trx_bookingpart_bookingpartid,
+     trx_bookingpart.`bookingid` AS trx_bookingpart_bookingid,
+     trx_bookingpart.`kodepart` AS trx_bookingpart_kodepart,
+     trx_bookingpart.`qty` AS trx_bookingpart_qty,
+     trx_bookingpart.`subtotal` AS trx_bookingpart_subtotal
+FROM
+     `trx_booking` trx_booking INNER JOIN `mst_bengkel` mst_bengkel ON trx_booking.`bengkelid` = mst_bengkel.`bengkelid`
+     INNER JOIN `trx_bookingpart` trx_bookingpart ON trx_booking.`bookingid` = trx_bookingpart.`bookingid`
+     INNER JOIN `mst_part` mst_part ON trx_bookingpart.`harga` = mst_part.`harga`
+     AND trx_bookingpart.`kodepart` = mst_part.`kodepart`
+where trx_booking.`bengkelid`= $P{bengkelid} AND MONTH(trx_booking.`tanggalbooking`)=$P{bulan}]]>
+	</queryString>
+	<field name="mst_bengkel_bengkelid" class="java.lang.String"/>
+	<field name="mst_bengkel_namabengkel" class="java.lang.String"/>
+	<field name="mst_part_kodepart" class="java.lang.String"/>
+	<field name="mst_part_gruppart" class="java.lang.String"/>
+	<field name="mst_part_harga" class="java.math.BigDecimal"/>
+	<field name="mst_part_description" class="java.lang.String"/>
+	<field name="trx_booking_bookingid" class="java.lang.String"/>
+	<field name="trx_booking_tanggalbooking" class="java.sql.Timestamp"/>
+	<field name="trx_booking_bengkelid" class="java.lang.String"/>
+	<field name="trx_bookingpart_bookingpartid" class="java.lang.String"/>
+	<field name="trx_bookingpart_bookingid" class="java.lang.String"/>
+	<field name="trx_bookingpart_kodepart" class="java.lang.String"/>
+	<field name="trx_bookingpart_qty" class="java.lang.Integer"/>
+	<field name="trx_bookingpart_subtotal" class="java.lang.Double"/>
+	<variable name="TotalHarga" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{trx_bookingpart_subtotal}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="136" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="229" y="0" width="395" height="62" uuid="7ee51eed-cfa8-4cd8-be19-3955fe5261a1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="36" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Laporan Penjualan Part]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="802" height="1" uuid="5127daa1-d872-403f-9c65-95e526e8cbe6"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="133" height="15" forecolor="#736343" uuid="5d967311-5676-4a0d-ae10-07cebbdacbde"/>
+				<text><![CDATA[ID Booking Part]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="133" y="0" width="133" height="15" forecolor="#736343" uuid="672f3e08-3648-4e43-a6f4-649283d7aa2f"/>
+				<text><![CDATA[Kode Part]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="399" y="0" width="133" height="15" forecolor="#736343" uuid="1c1dce65-94ab-40bf-b7bb-862ea18fbc35"/>
+				<text><![CDATA[Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="532" y="0" width="133" height="15" forecolor="#736343" uuid="9bc2bc54-f894-4194-8eab-dcc1616d51ef"/>
+				<text><![CDATA[Gruppart]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="665" y="0" width="133" height="15" forecolor="#736343" uuid="a3d5fac1-2512-40b1-9c29-da930e89cb52"/>
+				<text><![CDATA[Subtotal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="266" y="0" width="133" height="15" forecolor="#736343" uuid="cc05cc5b-1127-4fbb-b317-d09100d240c5"/>
+				<text><![CDATA[Tanggal Booking]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="83" height="20" uuid="abe22459-28ca-4966-a9cc-5265d64dcdfa"/>
+				<textFieldExpression><![CDATA[$F{trx_bookingpart_bookingpartid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="0" width="96" height="20" uuid="1909a387-27a3-4140-92eb-23a41af711e0"/>
+				<textFieldExpression><![CDATA[$F{trx_bookingpart_kodepart}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="266" y="0" width="100" height="20" uuid="2e3dc87c-467b-4189-88ec-4fb04cb04544"/>
+				<textFieldExpression><![CDATA[$F{trx_booking_tanggalbooking}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="399" y="0" width="100" height="20" uuid="30d87533-d4a3-4743-b5e6-3e2741076f73"/>
+				<textFieldExpression><![CDATA[$F{mst_part_description}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="532" y="0" width="100" height="20" uuid="ef5a947b-232b-4d8c-8df7-6cfd4f81e3a5"/>
+				<textFieldExpression><![CDATA[$F{mst_part_gruppart}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="665" y="0" width="100" height="20" uuid="ba86c462-993e-480f-ad32-07ef52b0cba8"/>
+				<textFieldExpression><![CDATA[$F{trx_bookingpart_subtotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="802" height="1" uuid="da74fb56-cd82-4208-9399-c0cbe05e924a"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="1" width="843" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="f6b94e27-17df-4ca3-87cf-abebc6de8919"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="783" y="1" width="40" height="20" forecolor="#736343" uuid="1323ebf3-c544-486e-a373-016005dea23e"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="703" y="1" width="80" height="20" forecolor="#736343" uuid="99e79861-d612-4bee-b419-61dd7edea495"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343" uuid="653765b8-5838-4512-8831-f2d88832420e"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="665" y="6" width="100" height="15" uuid="98d06b8c-9590-483a-95d5-e4b29dd9f4fc"/>
+				<textFieldExpression><![CDATA[$V{TotalHarga}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" x="498" y="6" width="145" height="15" forecolor="#736343" uuid="3cde2def-b53e-4b66-b573-2d8a550c4b1a"/>
+				<text><![CDATA[Estimasi Total Harga Part]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
