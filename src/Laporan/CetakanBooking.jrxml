@@ -2,10 +2,11 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="254eb64f-6c8c-4376-a471-9b767ce0194a">
 	<property name="ireport.zoom" value="1.4641000000000015"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="48"/>
 	<parameter name="noBooking" class="java.lang.String">
 		<defaultValueExpression><![CDATA["book002"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="logo" class="java.lang.Object"/>
 	<queryString>
 		<![CDATA[select b.namabengkel,
 		b.alamat,
@@ -28,7 +29,7 @@
         a.total
 from trx_booking a
 join mst_bengkel b on b.bengkelid = a.bengkelid
-join trx_bookingpart c on c.bookingid = a.bookingid
+left join trx_bookingpart c on c.bookingid = a.bookingid
 join mst_part c1 on c1.kodepart = c.kodepart
 join mst_customer d on d.customerid = a.customerid
 join mst_jasa e on e.jasaid = a.jasaid
@@ -114,6 +115,10 @@ where a.bookingid = $P{noBooking}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{alamat} + " (No.telp: " + $F{notelp} + ")"]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="475" y="0" width="80" height="68" uuid="27776e77-5171-40e7-8ccb-8c7a25db385e"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>
@@ -358,25 +363,29 @@ where a.bookingid = $P{noBooking}]]>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="31" splitType="Stretch">
+	<summary>
+		<band height="117" splitType="Stretch">
+			<staticText>
+				<reportElement x="455" y="97" width="100" height="20" uuid="8e12e699-9b81-44a6-9a67-1e272d679222"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[TTD ]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="455" y="11" width="100" height="20" uuid="85a5d5af-cfbd-40db-845e-7c8da96d14fd"/>
+				<reportElement x="455" y="0" width="100" height="20" uuid="85a5d5af-cfbd-40db-845e-7c8da96d14fd"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="330" y="11" width="100" height="20" uuid="fc7ef1f0-9607-4a1f-8519-02feac29a423"/>
+				<reportElement x="330" y="0" width="100" height="20" uuid="fc7ef1f0-9607-4a1f-8519-02feac29a423"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Estimasi total harga]]></text>
 			</staticText>
 		</band>
-	</columnFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
 	</summary>
 </jasperReport>
