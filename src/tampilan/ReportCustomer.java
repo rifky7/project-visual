@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package tampilan;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.sql.DriverManager;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import java.util.Date;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.DefaultComboBoxModel;
 import koneksi.DatabaseConnection;
@@ -33,6 +35,7 @@ public class ReportCustomer extends javax.swing.JFrame {
     private List<String> listCbBengkel = new ArrayList<>();
 
     String kodeBengkel = null;
+    String alamat = null;
     int bulan = 0;
   
 
@@ -66,12 +69,13 @@ public class ReportCustomer extends javax.swing.JFrame {
     }
     
     private void setKodeBengkel(String namabengkel) {
-        String sql = "SELECT bengkelid FROM mst_bengkel where namabengkel = '"+ namabengkel + "'";
+        String sql = "SELECT bengkelid, alamat FROM mst_bengkel where namabengkel = '"+ namabengkel + "'";
         try {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 kodeBengkel = rs.getString("bengkelid");
+                alamat = rs.getString("alamat");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -217,11 +221,14 @@ public class ReportCustomer extends javax.swing.JFrame {
         try{
             bulan = Integer.parseInt(cbBulan.getSelectedItem().toString());
             setKodeBengkel(cbBengkel.getSelectedItem().toString());
+            BufferedImage image = ImageIO.read(getClass().getResource("/Laporan/Logo.jpeg"));
             Map<String,Object> parameter = new HashMap <String, Object>();
             parameter.put("bengkel", cbBengkel.getSelectedItem().toString());
             parameter.put("namabulan", getBulan(bulan));
             parameter.put("bulan", bulan);
             parameter.put("bengkelid",kodeBengkel);
+            parameter.put("logo", image);
+            parameter.put("alamat", alamat);
             File file =new File ("src/Laporan/Laporan_Customer.jrxml");
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/pvisual", "root","");

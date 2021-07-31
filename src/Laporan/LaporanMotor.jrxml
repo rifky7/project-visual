@@ -25,6 +25,8 @@
 	<parameter name="namabulan" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="alamat" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
      mst_bengkel.`bengkelid` AS mst_bengkel_bengkelid,
@@ -57,7 +59,7 @@ WHERE mst_bengkel.`bengkelid`= $P{bengkelid} AND MONTH(trx_booking.`tanggalbooki
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="136" splitType="Stretch">
+		<band height="180" splitType="Stretch">
 			<staticText>
 				<reportElement style="Title" x="171" y="0" width="476" height="112" uuid="a2abb5e5-3462-477e-a5dd-3646f3e60c5d"/>
 				<textElement verticalAlignment="Middle">
@@ -65,6 +67,24 @@ WHERE mst_bengkel.`bengkelid`= $P{bengkelid} AND MONTH(trx_booking.`tanggalbooki
 				</textElement>
 				<text><![CDATA[Laporan Data Motor]]></text>
 			</staticText>
+			<image>
+				<reportElement x="16" y="13" width="87" height="80" uuid="6733ec20-d540-48a3-9025-87231153f5c3"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="1" y="122" width="162" height="20" uuid="4c48f22f-53f6-4906-ac51-41de2a49ad5b"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bengkel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="142" width="162" height="20" uuid="fb2a22ee-765b-4580-9e5c-b9305b08bc20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{alamat}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -146,9 +166,9 @@ WHERE mst_bengkel.`bengkelid`= $P{bengkelid} AND MONTH(trx_booking.`tanggalbooki
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="25" splitType="Stretch">
+		<band height="101" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="-21" y="1" width="843" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="4c1be8d9-c942-4868-a33c-176bf8a60149"/>
+				<reportElement mode="Opaque" x="-20" y="77" width="843" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="4c1be8d9-c942-4868-a33c-176bf8a60149"/>
 				<textField evaluationTime="Report">
 					<reportElement style="Column header" x="783" y="1" width="40" height="20" forecolor="#736343" uuid="1c49b673-4180-4de6-bd92-ff8f9f3b93cc"/>
 					<textElement verticalAlignment="Middle">
@@ -171,6 +191,13 @@ WHERE mst_bengkel.`bengkelid`= $P{bengkelid} AND MONTH(trx_booking.`tanggalbooki
 					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 				</textField>
 			</frame>
+			<staticText>
+				<reportElement x="702" y="24" width="100" height="20" uuid="62a9e124-a25e-41de-b7d0-6d694a84f183"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[TTD ]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<summary>
