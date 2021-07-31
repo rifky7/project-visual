@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Laporan_Customer" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e6305f39-5126-4dac-b0d9-1dc3e7fbcd54">
 	<property name="ireport.zoom" value="1.6105100000000014"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="83"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -25,6 +25,8 @@
 	<parameter name="bengkelid" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="alamat" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
      mst_bengkel.`bengkelid` AS mst_bengkel_bengkelid,
@@ -61,9 +63,9 @@ WHERE mst_bengkel.`bengkelid`= $P{bengkelid} AND MONTH(trx_booking.`tanggalbooki
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="148" splitType="Stretch">
+		<band height="177" splitType="Stretch">
 			<staticText>
-				<reportElement style="Title" x="85" y="16" width="406" height="62" uuid="38b43ce3-cf0e-40ec-949e-2e7508cf96a0"/>
+				<reportElement style="Title" x="102" y="10" width="406" height="62" uuid="38b43ce3-cf0e-40ec-949e-2e7508cf96a0"/>
 				<textElement verticalAlignment="Middle">
 					<font size="36" pdfFontName="Times-Roman"/>
 				</textElement>
@@ -83,6 +85,17 @@ WHERE mst_bengkel.`bengkelid`= $P{bengkelid} AND MONTH(trx_booking.`tanggalbooki
 				</textElement>
 				<textFieldExpression><![CDATA[$P{bengkel}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="1" y="131" width="162" height="20" uuid="51403788-df80-4657-ac38-0a80cf13bd48"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{alamat}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="12" y="10" width="73" height="67" uuid="ca4a5c25-6da5-43a0-b063-6e6c8c4447a6"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -239,12 +252,19 @@ WHERE mst_bengkel.`bengkelid`= $P{bengkelid} AND MONTH(trx_booking.`tanggalbooki
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
 			</line>
+			<staticText>
+				<reportElement x="454" y="25" width="100" height="20" uuid="72b98667-7ce1-4337-8c63-44817166f644"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[TTD ]]></text>
+			</staticText>
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="25" splitType="Stretch">
+		<band height="49" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="-21" y="1" width="576" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="dbfb04d6-2c27-4ee5-920e-30eb7eaac8eb"/>
+				<reportElement mode="Opaque" x="-21" y="14" width="576" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="dbfb04d6-2c27-4ee5-920e-30eb7eaac8eb"/>
 				<textField evaluationTime="Report">
 					<reportElement style="Column header" x="531" y="1" width="40" height="20" forecolor="#736343" uuid="6889c493-0981-47dd-ac37-7d601481f297"/>
 					<textElement verticalAlignment="Middle">

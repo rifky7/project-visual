@@ -147,7 +147,6 @@ public class DetailActivity extends javax.swing.JFrame {
 
         jLabel8.setText("Bengkel");
 
-        wlcName.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         wlcName.setText("Welcome");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -265,7 +264,7 @@ public class DetailActivity extends javax.swing.JFrame {
 
         jMenu1.setText("Form Report");
 
-        jMenuItem1.setText("Reprot Customer");
+        jMenuItem1.setText("Report Customer");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);

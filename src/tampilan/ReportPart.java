@@ -36,6 +36,7 @@ public class ReportPart extends javax.swing.JFrame {
     private List<String> listCbBengkel = new ArrayList<>();
 
     String kodeBengkel = null;
+    String alamat = null;
     int bulan = 0;
   
 
@@ -69,12 +70,13 @@ public class ReportPart extends javax.swing.JFrame {
     }
     
     private void setKodeBengkel(String namabengkel) {
-        String sql = "SELECT bengkelid FROM mst_bengkel where namabengkel = '"+ namabengkel + "'";
+        String sql = "SELECT bengkelid, alamat FROM mst_bengkel where namabengkel = '"+ namabengkel + "'";
         try {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 kodeBengkel = rs.getString("bengkelid");
+                alamat = rs.getString("alamat");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -221,6 +223,7 @@ public class ReportPart extends javax.swing.JFrame {
             parameter.put("bulan", bulan);
             parameter.put("bengkelid",kodeBengkel);
             parameter.put("logo", image );
+            parameter.put("alamat", alamat);
             File file =new File ("src/Laporan/Laporan_Part.jrxml");
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/pvisual", "root","");
