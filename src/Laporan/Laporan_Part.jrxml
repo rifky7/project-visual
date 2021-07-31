@@ -25,6 +25,9 @@
 	<parameter name="namabulan" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="logo" class="java.lang.Object">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      mst_bengkel.`bengkelid` AS mst_bengkel_bengkelid,
@@ -77,6 +80,10 @@ where trx_booking.`bengkelid`= $P{bengkelid} AND MONTH(trx_booking.`tanggalbooki
 				</textElement>
 				<text><![CDATA[Laporan Penjualan Part]]></text>
 			</staticText>
+			<image>
+				<reportElement x="1" y="0" width="114" height="108" uuid="97041dba-dda7-47b6-8d0f-e2cf10ba703f"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

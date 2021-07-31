@@ -5,7 +5,7 @@
  */
 package tampilan;
 
-import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -880,8 +881,10 @@ public class FormBooking extends javax.swing.JFrame {
     
     private void cetakForm(String noBooking) {
         try{
+            BufferedImage image = ImageIO.read(getClass().getResource("/Laporan/Logo.jpeg"));
             Map<String,Object> parameter = new HashMap <String, Object>();
             parameter.put("noBooking", noBooking);
+            parameter.put("logo", image);
             File file =new File ("src/Laporan/CetakanBooking.jrxml");
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/pvisual", "root","");

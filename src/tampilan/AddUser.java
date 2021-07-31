@@ -47,7 +47,7 @@ public class AddUser extends javax.swing.JFrame {
     }
     
     protected void dataTable(){
-        Object [] baris = {"Name", "Id Karyawan", "Email", "Password"};
+        Object [] baris = {"Name", "Id Karyawan", "Email"};
         tabmode = new DefaultTableModel(null, baris);
         tableUser.setModel(tabmode);
         String sql = "select * from mst_user";
@@ -59,14 +59,27 @@ public class AddUser extends javax.swing.JFrame {
                 String a = hasil.getString("name");
                 String b = hasil.getString("idKaryawan");
                 String c = hasil.getString("email");
-                String d = hasil.getString("password");
-                String [] data  = {a,b,c,d};
+                String [] data  = {a,b,c};
                 tabmode.addRow(data);
                 
             } 
         } catch (SQLException e){
             e.printStackTrace();
         }
+    }
+    
+    private String getPassword(String idKaryawan) {
+        String sql = "select password from mst_user where idkaryawan = '"+idKaryawan+"' ";
+        String a = "";
+        try {
+            java.sql.Statement stat = connect.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while (hasil.next()) {
+                a = hasil.getString("password");                
+            } 
+        } catch (Exception e) {
+        }
+        return a;
     }
 
     /**
@@ -205,13 +218,13 @@ public class AddUser extends javax.swing.JFrame {
 
         tableUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Name", "Id Karyawan", "Email", "Password"
+                "Name", "Id Karyawan", "Email"
             }
         ));
         tableUser.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -220,9 +233,6 @@ public class AddUser extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tableUser);
-        if (tableUser.getColumnModel().getColumnCount() > 0) {
-            tableUser.getColumnModel().getColumn(3).setResizable(false);
-        }
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel2.setText("Name");
@@ -306,12 +316,13 @@ public class AddUser extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(save)
-                    .addComponent(exit)
-                    .addComponent(edit)
-                    .addComponent(delete)
-                    .addComponent(cancel))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(exit)
+                        .addComponent(edit)
+                        .addComponent(delete)
+                        .addComponent(cancel)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -438,12 +449,11 @@ public class AddUser extends javax.swing.JFrame {
         String a = tabmode.getValueAt(bar, 0).toString();
         String b = tabmode.getValueAt(bar, 1).toString();
         String c = tabmode.getValueAt(bar, 2).toString();
-        String d = tabmode.getValueAt(bar, 3).toString();
         
         name.setText(a);
         idKaryawan.setText(b);
         email.setText(c);
-        password.setText(d);
+        password.setText(getPassword(b));
     }//GEN-LAST:event_tableUserMouseClicked
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
